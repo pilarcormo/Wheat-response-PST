@@ -3,7 +3,11 @@ library(grid)
 library(gridExtra)
 library(RColorBrewer)
 
+<<<<<<< HEAD
 samples <- read.csv("~/Desktop/samples-2013-2015.CSV")
+=======
+samples <- read.csv("~/samples-2013-2015.CSV")
+>>>>>>> 194e59e35a48c7927ead0f27738f7d21efceb553
 
 samples <- read.csv("~/Desktop/RNA-seq_samples_1314.csv")
 
@@ -25,6 +29,7 @@ df3 <- data.frame(x,y)
 
 p_percent <- ggplot(df3, aes(x = reorder(x, y), y = y)) + 
   xlab("") + ylab("%") +theme_bw()  + geom_bar(stat = "identity",  width=.8, fill="darkgreen") + ggtitle(" ") +
+<<<<<<< HEAD
   coord_flip()  + theme(plot.title = element_text(size = 20), axis.text=element_text(size=18), axis.title=element_text(size=18,face="bold"))
 
 p_percent
@@ -46,6 +51,39 @@ p_absolute <- ggplot(df2, aes(x = reorder(newdata.Var1, newdata.Freq), y = newda
   coord_flip()  + theme(axis.ticks = element_blank(), axis.text=element_text(size=18), axis.title=element_text(size=18,face="bold"), axis.title=element_text(size=16,face="bold")) + 
   sc + theme(legend.text = element_text(size = 18)) + guides(colour = guide_colorbar(barwidth = 6, barheight = 20))
 ######
+=======
+  coord_flip()  + theme(plot.title = element_text(size = 20), axis.text=element_text(size=18), axis.title=element_text(size=18,face="bold")) + 
+  geom_text(df2, aes(x = reorder(newdata.Var1, newdata.Freq), y = newdata.Freq), size = 3) +  scale_colour_gradient()
+
+colors = brewer.pal(9, "BrBG")
+pal <- colorRampPalette(colors)
+
+
+myPalette <- colorRampPalette(rev(brewer.pal(11, "Spectral")))
+sc <- scale_colour_gradientn(colours = myPalette(100), limits=c(0, 167), guide = "colourbar") 
+sc
+
+p_absolute <- ggplot(df2, aes(x = reorder(newdata.Var1, newdata.Freq), y = newdata.Freq, fill = as.integer(newdata.Freq))) + 
+  xlab("") + ylab("Counts") +theme_bw() + geom_bar(stat = "identity",  width=.8) + ggtitle(" ") + 
+  coord_flip()  + theme(axis.ticks = element_blank(), axis.text=element_text(size=18), axis.title=element_text(size=18,face="bold"), axis.title=element_text(size=16,face="bold")) + 
+  sc + theme(legend.text = element_text(size = 18)) + guides(colour = guide_colorbar(barwidth = 6, barheight = 20))
+
+
+p_absolute <- ggplot(df2, aes(x = reorder(newdata.Var1, newdata.Freq), y = newdata.Freq, fill = as.integer(newdata.Freq))) + 
+  xlab("") + ylab("Counts") +theme_bw() + geom_tile() + ggtitle(" ") + 
+  coord_flip()  + theme(axis.ticks = element_blank(), axis.text=element_text(size=18), axis.title=element_text(size=18,face="bold"), axis.title=element_text(size=16,face="bold")) + 
+  scale_x_discrete(breaks=NULL) 
+
+p_absolute + scale_fill_continuous(low = "darkseagreen1", high = "darkred", space = "Lab", na.value = "grey50", guide = "colourbar")
+
+grid <- grid.arrange(p_percent , p_absolute, ncol=2, heights=c(1, 10), widths =c(2,1), as.table =TRUE)
+
+
+
+ggplot(subset(mtcars, am==0), aes(x=wt, y=mpg, colour=carb)) + 
+  geom_point(size=6) + sc
+
+>>>>>>> 194e59e35a48c7927ead0f27738f7d21efceb553
 
 
 ########VARIETIES
@@ -55,6 +93,7 @@ df_variety <- data.frame(table(samples$Variety))
 order <- df_variety[order(df_variety$Freq),] 
 x <- order[order$Freq > 2,]$Var1
 y <- order[order$Freq > 2,]$Freq
+<<<<<<< HEAD
 
 y_3 <- y*100/sum(y)
 
@@ -70,6 +109,19 @@ v_absolute <- ggplot(df2_variety, aes(x = reorder(x, y), y = y)) +
 v_percent <- ggplot(df3_variety, aes(x = reorder(x, y_3), y = y_3)) + 
   xlab("") + ylab("Frequency") +theme_bw() + geom_bar(stat = "identity",  width=.8) + ggtitle("Varieties 2013-2015") + 
   coord_flip() + theme(plot.title = element_text(size = 20), axis.text=element_text(size=18), axis.title=element_text(size=18,face="bold")) 
+=======
+df2_variety <- data.frame(x, y)
+
+
+v_percent <- ggplot(df2_variety, aes(x = reorder(x, y), y = y)) + 
+  xlab("") + ylab("Counts") +theme_bw() + geom_bar(stat = "identity",  width=.8) + ggtitle("Wheat varieties 2013-2015") + 
+  coord_flip() + theme(plot.title = element_text(size = 20), axis.text=element_text(size=18), axis.title=element_text(size=18,face="bold")) 
+ 
+
+v_absolute <- ggplot(df3_variety, aes(x = reorder(x, y), y = y_3)) + 
+  xlab("") + ylab("Frequency") +theme_bw() + geom_bar(stat = "identity",  width=.8) + ggtitle("Varieties 2013-2015") + 
+  coord_flip() + theme(axis.text=element_text(size=12), axis.title=element_text(size=16,face="bold"))
+>>>>>>> 194e59e35a48c7927ead0f27738f7d21efceb553
 
 
 ########VARIETIES for wheat
