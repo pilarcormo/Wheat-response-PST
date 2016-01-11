@@ -75,16 +75,6 @@ File.open("final_scores.csv", "w+") do |f|
 			f << "," + value.to_s
 
 		end
-		# f << "\n"
 	end 
 
 end
-
-
-# CSV.open("final_scores.csv", 'ab') do |csv|
-# 	var = variety[7, -2]
-#   csv << [var]
-# end
-
-# CSV.open("final_scores.csv", 'ab') do |csv|
-#   csv << [i, marker, numeritos 
