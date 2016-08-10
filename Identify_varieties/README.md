@@ -29,7 +29,7 @@ line=$1 ##name of the library
 ```
 m=$1  ##name of the library
 mkdir $m/Trimmed/SNPs
-gunzip -c $m/Trimmed/accepted_hits_sorted.pileup.gz | perl $work/SCRIPTS/compsnps_pipe1_sampileup.py > $m/Trimmed/SNPs/$m\_SNP_ratios.txt
+gunzip -c $m/accepted_hits_sorted.pileup.gz | perl $work/SCRIPTS/compsnps_pipe1_sampileup.py > $m/SNPs/$m\_SNP_ratios.txt
 perl $work/SCRIPTS/extract_2x_same_ref.pl $m/SNPs/$m\_SNP_ratios.txt > $m/$m\_Reference_greater_2x.tab
 ```
 
