@@ -1,9 +1,15 @@
 require 'csv'
 require 'pp'
 
+dataset = ARGV[0] 
+#path = ARGV[1] #path to the library 
+
+
+reference = File.open("#{dataset}_Reference_greater_2x.tab", "r")
+snps = File.open("#{dataset}_SNP_freq_10x.txt", 'r')
+decode = File.open("SNPs_A_B_info.txt", 'r')
 f = File.open("SNPAndContig.csv", "r")
-reference = File.open("LIB4468/LIB4468_Reference_greater_2x.tab", "r")
-snps = File.open("LIB4468/SNPs/10X/LIB4468_SNP_freq_10x.txt", 'r')
+
 
 marker_contig_pos = Hash.new{ |h,k| h[k] = Hash.new(&h.default_proc) }
 contig_pos_snp = Hash.new{ |h,k| h[k] = Hash.new(&h.default_proc) }
@@ -86,16 +92,16 @@ final_contig_pos.each do |contig, pos_base|
           hom = variants_markers[name_marker][1]
           het = variants_markers[name_marker][2]
           if ref_alt_snp == ref
-            CSV.open("snps_good_last.csv", 'a') do |csv|
+            CSV.open("snp_markers_#{dataset}.csv", 'a') do |csv|
               csv << [name_marker, contig, pos, ref, ref_alt_snp, 0]
             
             end
           elsif ref_alt_snp == hom
-            CSV.open("snps_good_last.csv", 'a') do |csv|
+            CSV.open("snp_markers_#{dataset}.csv", 'a') do |csv|
               csv << [name_marker, contig, pos, ref, ref_alt_snp, 2]
             end
           elsif ref_alt_snp == het
-            CSV.open("snps_good_last.csv", 'a') do |csv|
+            CSV.open("snp_markers_#{dataset}.csv", 'a') do |csv|
               csv << [name_marker, contig, pos, ref, ref_alt_snp, 1]
             end
           end 
