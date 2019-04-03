@@ -2,7 +2,7 @@
 
 This pipeline is used to identify the wheat cultivar in [field pathogenomics RNA-seq samples](https://academic.oup.com/gbe/article/9/12/3282/4644453). It relies on the SNP makers developed with the [Breeders' 35K Axiom® array](http://www.cerealsdb.uk.net/cerealgenomics/CerealsDB/axiom_download.php), which contains 35,143 SNPs selected to be informative across a wide range of hexaploid wheat accessions.
 
-![FP-varietyconf][/FP-varietyconf.png]
+![FP-varietyconf](/FP-varietyconf.png)
 
 1. Copy the Identify_varieties directory
 
