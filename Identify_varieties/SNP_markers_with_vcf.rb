@@ -4,17 +4,20 @@ require_relative 'vcf'
 
 
 dataset = ARGV[0] 
+path = ARGV[1] #path to the library 
 
-reference = File.open("test_Reference_greater_2x.tab", "r")
-decode = File.open("SNPs_A_B_info_test.txt", 'r')
-f = File.open("SNPAndContig_test.txt", "r")
-vcf_file = File.open("#{dataset}.vcf") 
+
+f = File.open("SNPAndContig.csv", "r")
+reference = File.open("2016/#{dataset}_Reference_greater_2x.tab", "r")
+#snps = File.open("#{path}/#{dataset}/Trimmed/SNPs/10X/#{dataset}_SNP_freq_10x.txt", 'r')
+
+vcf_file = File.open("2016/#{dataset}.vcf") 
 
 con_pos_snp_poly, vcfsinfo, vcfspos, vcfs_chrom = Vcf.open_vcf(vcf_file)
 
 con_pos_type = Vcf.type_per_pos(vcfsinfo, vcfspos, vcfs_chrom, con_pos_snp_poly)
 
-
+#pp con_pos_type
 
 
 marker_contig_pos = Hash.new{ |h,k| h[k] = Hash.new(&h.default_proc) }
@@ -35,6 +38,7 @@ decode.each_line { |marker|
   variants_markers[name] << het
 }
 
+#pp variants_markers
 
 ####SNPs with markers file 
 f.each_line { |line|
@@ -48,10 +52,11 @@ f.each_line { |line|
 
  }
 
+pp marker_contig_pos
 
 final_contig_pos = Hash.new{ |h,k| h[k] = Hash.new(&h.default_proc) }
 
-##Reference tab file 
+#Reference tab file 
 reference.each_line { |ref| 
   columns = ref.split("\t")
   ref_sample = columns[2].strip
@@ -67,6 +72,7 @@ final_contig_pos.each do |contig, pos_base|
     name_marker = marker_contig_pos[contig][pos]
     if variants_markers.has_key?(name_marker)
       ref = variants_markers[name_marker][0]
+      pp ref
       if ref[0] == alt
         CSV.open("snp_markers_#{dataset}.csv", 'a') do |csv|
             csv << [name_marker, contig, pos, ref, 0]
@@ -101,7 +107,7 @@ end
 
 
 
-pp "Done"
+
 
 
 

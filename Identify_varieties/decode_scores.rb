@@ -2,9 +2,10 @@ require 'csv'
 require 'pp'
 
 dataset = ARGV[0] 
-#path = ARGV[1]
-f = File.open("snp_markers_#{dataset}.csv", "r")
-code = File.open("varieties_numbercode_example.csv", "r")
+path = ARGV[1]
+f = File.open("#{path}/snp_markers_#{dataset}.csv", "r")
+code = File.open("varieties_numbercode.csv", "r")
+pp code
 
 sample_marker_score = {}
 james_marker_score = {}
@@ -15,10 +16,10 @@ markers = []
 variety = []
 
 code.each_line { |line|
-	variety = line.strip.split(",")
+	variety = line.split(",")
   	break 
  }
- 
+
 var = variety[1,variety.length]
 
  f.each_line { |line|
@@ -42,14 +43,17 @@ code.each_with_index { |line, index|
 	james_marker_score.store(marker, scores)
 	scores = []
  }
+pp sample_marker_score
 
 output_marker_dic = {}
 array = []
 
-sample_marker_score.each do |marker, score|
+sample_marker_score.each do |marker, score| 
 	if james_marker_score.has_key?(marker) 
 		james_marker_score[marker].each do |value|
 			val = value.to_i
+			pp val
+			pp score
 			if val == 2
 				if score == 2
 					array << 1
@@ -66,6 +70,14 @@ sample_marker_score.each do |marker, score|
 				elsif score == 0
 					array << 1
 				end
+			elsif val == 1
+				if score == 2
+					array << 0.5
+				elsif score ==1
+					array << 1
+				elsif score == 0
+					array << 0.5
+				end 
 			end 
 		end 
 		output_marker_dic.store(marker, array)	
@@ -74,12 +86,13 @@ sample_marker_score.each do |marker, score|
 
 end 
 
-File.open("final_scores_#{dataset}_last.csv", "w+") do |f|
+
+
+File.open("final_scores_#{dataset}.csv", "w+") do |f|
 	var.each do |name|
 		f << name + ","
 	end 
 	output_marker_dic.each do |marker, score|
-
 		f << "\n" + marker  
 		
 		score.each do |value|
