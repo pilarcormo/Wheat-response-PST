@@ -2,7 +2,7 @@
 
 This pipeline is used to identify the wheat cultivar in [field pathogenomics RNA-seq samples](https://academic.oup.com/gbe/article/9/12/3282/4644453). It relies on the SNP makers developed with the [Breeders' 35K Axiom® array](http://www.cerealsdb.uk.net/cerealgenomics/CerealsDB/axiom_download.php), which contains 35,143 SNPs selected to be informative across a wide range of hexaploid wheat accessions.
 
-![FP-varietyconf](/FP-varietyconf.png)
+![FP-varietyconf](FP-varietyconf.png)
 
 1. Copy the Identify_varieties directory
 
@@ -31,24 +31,15 @@ This pipeline is used to identify the wheat cultivar in [field pathogenomics RNA
 
    ``perl SCRIPTS/extract_2x_same_ref.pl <sample>/SNPs_axiom/<sample>\_SNP_ratios.txt > <sample>/<sample>\_Reference_greater_2x.tab``
 
-8. To confirm the wheat variety, we need to run: 
+8. To confirm the wheat variety, we need to run [snp_markers.rb](https://github.com/pilarcormo/Wheat-response-PST/Scripts/Identify_varieties/SNP_markers_with_vcf.rb) and then [decode_scores.rb](https://github.com/pilarcormo/Wheat-response-PST/Scripts/Identify_varieties/decode_scores.rb)
 
    ``ruby Identify_varieties/SNP_markers.rb $sample $path``
 
-``ruby Identify_varieties/decode_scores.rb $m ​$path``
+   ``ruby Identify_varieties/decode_scores.rb $sample $path``
 
 where `$sample` is the name of the library and `$path` is the path where the library can be found
 
 The file final_scores_`sample`_library.csv  will be generated.
 
-Run the following R script to obtain the top score that corresponds to the identified variety: 
-
-``LIB <- read.csv("final_scores_<sample>.csv")
-colMax <- function(data) sapply(data, max, na.rm = TRUE)
-colSort <- function(data, ...) sapply(data, sort, ...)
-varieties <- colSums(LIB[,-1])
-df <- data.frame(varieties)
-write.csv(df, "<sample>.csv")
-colMax(df)
-varieties``
+Run the  R script [variety_identification.R](https://github.com/pilarcormo/Wheat-response-PST/blob/master/Identify_varieties/Scripts/variety_identification.R) to obtain the top score that corresponds to the identified variety.
 
