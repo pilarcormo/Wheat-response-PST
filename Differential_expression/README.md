@@ -5,9 +5,6 @@ This pipeline is used to find differentially expressed genes in rust-infected wh
 ![FP-DEG](/Users/morenop/Documents/Wheat-response-PST/Differential_expression/FP-kallisto.png)
 
 
-
-
-
 1. Read quality and adapter trimming 
 
    ```
@@ -21,7 +18,6 @@ This pipeline is used to find differentially expressed genes in rust-infected wh
    
    kallisto quant -i WGSC_v1.1_HLC.idx -o kallisto_iwgsc_​$sample  -b 100 $  $sample\_clean_R1.fastq $sample\_clean_R2.fastq
    ```
-
    
 
 3. Run [tximport](https://github.com/mikelove/tximport) in R to get count data from Kallisto output files 
@@ -49,22 +45,22 @@ This pipeline is used to find differentially expressed genes in rust-infected wh
    write.csv(counts, "table-counts-fp18.csv")
    ```
 
-   4. Import metadata file with replicates information
+4. Import metadata file with replicates information
 
-      ```R
-      file<-paste(directory, "../replicates.txt", sep="")
-      cond<-read.table(file, header=TRUE, row.names=1)
-      
-      ### Check that metadata file contains the libraries in the same order as counts table 
-      
-      all(rownames(cond) %in% colnames(counts))
-      all(rownames(cond) == colnames(counts))
-      counts <- counts[, rownames(cond)]
-      all(rownames(cond) == colnames(counts))
-      rownames(cond)
-      ```
+   ```R
+   file<-paste(directory, "../replicates.txt", sep="")
+   cond<-read.table(file, header=TRUE, row.names=1)
+   
+   ### Check that metadata file contains the libraries in the same order as counts table 
+   
+   all(rownames(cond) %in% colnames(counts))
+   all(rownames(cond) == colnames(counts))
+   counts <- counts[, rownames(cond)]
+   all(rownames(cond) == colnames(counts))
+   rownames(cond)
+   ```
 
-      5. Run RUVseq
+5. Run RUVseq
 
    ``` R
    #### re-order data and make sure the values are integers ###
@@ -124,22 +120,44 @@ This pipeline is used to find differentially expressed genes in rust-infected wh
                          
    ```
 
-4. Import normalised counts from RUVseq to DESeq2 and perform pairwise comparisons between conditions 
+6. Import normalised counts from RUVseq to DESeq2 and perform pairwise comparisons between conditions 
+
+   ```counts(set3)
+   dds<-DESeqDataSetFromMatrix(countData = counts(set3), colData = pData(set3),design=~cond.Variety)
+   dds <- DESeq(dds)
+   rld <- rlog(dds)
+   res <- results(dds)
+   row.names(counts(set3))
+   colData = pData(set3)
+   resOrdered <- res[order(res$padj),]
+   ```
+
+7. Convert normalised counts from RUVseq into tpm values:
+
+Use [counts_to_tpm.R](https://gist.github.com/slowkow/c6ab0348747f86e2748b)function. Effective gene lenghts can be obtained from kallisto output abundance files. 
+
+   ```awk -F '\t' 'BEGIN{OFS="\t"}{print $1, $3}' abundance.tsv > efflength.tab```
+   ```join con1_efflength.tab con2_efflength.tab | join - con3_efflength.tab > efflength-matrix.tsv```
+   ```awk -F ',' '{print $1}' ruvseq-counts.csv > genes-included-ruvseq.txt```
+   ```awk -F ',' 'NR==FNR {id[$1]; next} $1 in id' genes-included-ruvseq.txt efflength-matrix.tsv > eff-length -matrix-onlygenecounts.csv```
+   
+   ```tpmnew <- counts_to_tpm(ruvseqCounts, effLen)
+   write.csv(tpmnew, "tpm-ruvseq.csv")
+   ```
+
+8. Use [Clust](https://github.com/BaselAbujamous/clust) to build co-expression clusters. The normalisation code used is the one suggested for RNA-seq tpm data (RNA-seq TPM, FPKM, and RPKM data: 101 3 4)
+
+   ```clust $tpm-ruvseq.tsv -r replicates.txt -o clustering-ruvseq -n 101 3 4```
+
+9. Use [goatools](https://github.com/tanghaibao/goatools) to find GO enrichment in co-expressed gene lists. 
+
+   ```python scripts/find_enrichment.py --pval=0.05 --indent study population association > output.txt```
+
+Study -list of genes (names) obtained from the differential expression analysis (e.g. co-expressed genes in one cluster)
+Population - list of all the genes (names) under study. This means all the genes that we could potentially find (from reference fasta file)
+Association - file with gene names (have to match the ones in the reference file used for the alignment) and the GO terms associated to each gene
 
 
-
-[Clust](https://github.com/BaselAbujamous/clust)
-
-
-
-
-
-[goatools](https://github.com/tanghaibao/goatools)
-
-
-
-
-
-TILLING lines with high impact mutations on gene of interest
+10. Find TILLING lines with high impact mutations on gene of interest
 
 [impact_mut.rb](https://github.com/pilarcormo/Wheat-response-PST/blob/master/TILLING/impact_mut.rb)
