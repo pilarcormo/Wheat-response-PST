@@ -2,7 +2,7 @@
 
 This pipeline is used to find differentially expressed genes in rust-infected wheat using [field pathogenomics RNA-seq samples](https://academic.oup.com/gbe/article/9/12/3282/4644453). It's adapted for the [recently released](http://science.sciencemag.org/content/361/6403/eaar7191/tab-figures-data) wheat annotation [IWGSC Refseq v1.1](https://wheat-urgi.versailles.inra.fr/Seq-Repository/Annotations). 
 
-![FP-DEG](https://github.com/pilarcormo/Wheat-response-PST/Differential_expression/FP-kallisto.png)
+![FP-DEG](FP-kallisto.png)
 
 
 1. Read quality and adapter trimming 
@@ -134,7 +134,7 @@ This pipeline is used to find differentially expressed genes in rust-infected wh
 
 7. Convert normalised counts from RUVseq into tpm values:
 
-   Use [counts_to_tpm.R](https://gist.github.com/slowkow/c6ab0348747f86e2748b)function. Effective gene lenghts can be obtained from kallisto output abundance files. 
+   Use [counts_to_tpm.R](https://gist.github.com/slowkow/c6ab0348747f86e2748b) function. Effective gene lenghts can be obtained from kallisto output abundance files. 
 
    ```awk -F '\t' 'BEGIN{OFS="\t"}{print $1, $3}' abundance.tsv > efflength.tab```
    ```join con1_efflength.tab con2_efflength.tab | join - con3_efflength.tab > efflength-matrix.tsv```
@@ -153,9 +153,9 @@ This pipeline is used to find differentially expressed genes in rust-infected wh
 
    ```python scripts/find_enrichment.py --pval=0.05 --indent study population association > output.txt```
 
-   Study -list of genes (names) obtained from the differential expression analysis (e.g. co-expressed    genes in one cluster)
-   Population - list of all the genes (names) under study. This means all the genes that we could potentially find (from reference fasta file)
-   Association - file with gene names (have to match the ones in the reference file used for the alignment) and the GO terms associated to each gene
+   - Study -list of genes (names) obtained from the differential expression analysis (e.g. co-expressed    genes in one cluster)
+   - Population - list of all the genes (names) under study. This means all the genes that we could potentially find (from reference fasta file)
+   - Association - file with gene names (have to match the ones in the reference file used for the alignment) and the GO terms associated to each gene
 
 10. Find TILLING lines with high impact mutations on gene of interest
 
