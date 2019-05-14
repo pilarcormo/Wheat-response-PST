@@ -121,22 +121,20 @@ This pipeline is used to find differentially expressed genes in rust-infected wh
    set4 <- RUVr(set, genes, k=1, res)
    plotRLE(set4, outline=FALSE, ylim=c(-4, 4), col=colors[condition],las=2)
    plotPCA(set4, col=colors[condition], cex=1, las=2)              
-                          
+                         
    ```
 
-   
-
-6. Import normalised counts from RUVseq to DESeq2 
+4. Import normalised counts from RUVseq to DESeq2 and perform pairwise comparisons between conditions 
 
 
 
-Clust](https://github.com/BaselAbujamous/clust)
+[Clust](https://github.com/BaselAbujamous/clust)
 
 
 
 
 
-https://github.com/tanghaibao/goatools
+[goatools](https://github.com/tanghaibao/goatools)
 
 
 
