@@ -1,0 +1,14 @@
+while read line ; do grep $line 1314_SA2/Processed_Data/*_processed.tsv >> 1314-SA-C0-datapoints.txt ; done<1314_SA2/1314-SA-C0.txt
+while read line ; do grep $line 1314_SA2/Processed_Data/*_processed.tsv >> 1314-SA-C1-datapoints.txt ; done<1314_SA2/1314-SA-C1.txt
+while read line ; do grep $line 1314_SA2/Processed_Data/*_processed.tsv >> 1314-SA-C2-datapoints.txt ; done<1314_SA2/1314-SA-C2.txt
+while read line ; do grep $line 1314_SA2/Processed_Data/*_processed.tsv >> 1314-SA-C3-datapoints.txt ; done<1314_SA2/1314-SA-C3.txt
+while read line ; do grep $line 1314_SA2/Processed_Data/*_processed.tsv >> 1314-SA-C4-datapoints.txt ; done<1314_SA2/1314-SA-C4.txt
+while read line ; do grep $line 1314_SA2/Processed_Data/*_processed.tsv >> 1314-SA-C5-datapoints.txt ; done<1314_SA2/1314-SA-C5.txt
+while read line ; do grep $line 1314_SA2/Processed_Data/*_processed.tsv >> 1314-SA-C6-datapoints.txt ; done<1314_SA2/1314-SA-C6.txt
+while read line ; do grep $line 1314_SA2/Processed_Data/*_processed.tsv >> 1314-SA-C7-datapoints.txt ; done<1314_SA2/1314-SA-C7.txt
+while read line ; do grep $line 1314_SA2/Processed_Data/*_processed.tsv >> 1314-SA-C8-datapoints.txt ; done<1314_SA2/1314-SA-C8.txt
+while read line ; do grep $line 1314_SA2/Processed_Data/*_processed.tsv >> 1314-SA-C9-datapoints.txt ; done<1314_SA2/1314-SA-C9.txt
+while read line ; do grep $line 1314_SA2/Processed_Data/*_processed.tsv >> 1314-SA-C10-datapoints.txt ; done<1314_SA2/1314-SA-C10.txt
+while read line ; do grep $line 1314_SA2/Processed_Data/*_processed.tsv >> 1314-SA-C11-datapoints.txt ; done<1314_SA2/1314-SA-C11.txt
+while read line ; do grep $line 1314_SA2/Processed_Data/*_processed.tsv >> 1314-SA-C12-datapoints.txt ; done<1314_SA2/1314-SA-C12.txt
+while read line ; do grep $line 1314_SA2/Processed_Data/*_processed.tsv >> 1314-SA-C13-datapoints.txt ; done<1314_SA2/1314-SA-C13.txt
