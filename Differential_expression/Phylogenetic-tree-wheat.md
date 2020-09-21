@@ -29,7 +29,7 @@ All scripts and full pipelines to make a phylogenetic tree using field RNA-seq s
 	do
   		python $home/SCRIPTS/phylogenetic_trees/sort_fasta.py -f $f > $consensus/$(basename $f).sorted
 	done 
-	
+
 	# With all the files ordered by gene and placed in the sorted folder, filter out which genes are relevant (have enough information)
 	# codon_from_fasta has multiple filtering parameters, the most relevant are -l (minimum percentage of known bases in a sequence for acceptance) -s (minimum number of accepted samples percentage)
 
@@ -44,5 +44,5 @@ All scripts and full pipelines to make a phylogenetic tree using field RNA-seq s
 	echo -n " " >> $OUTPUT
 
 	wc -m < ${files[0]} >> $OUTPUT
-	# Write all the sequences to the final.phy file to generate a sequential PHYLIP file which can be used to run the tre. 
+	# Write all the sequences to the final.phy file to generate a sequential PHYLIP file which can be used to run the tree using RAxML. 
 	for filename in $consensus/*.filtered; do echo -n "$(basename $filename | cut -d '_' -f 1) "; cat $filename; echo ""; done >> $OUTPUT
