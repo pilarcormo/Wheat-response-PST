@@ -14,14 +14,14 @@ All scripts and full pipelines to make a phylogenetic tree using field RNA-seq s
 
 	STAR --runThreadN 12 --runMode alignReads --genomeDir $genome --readFilesIn $line/$line\_clean_R1.fastq $line/$line\_clean_R2.fastq --outSAMtype BAM SortedByCoordinate --outSAMstrandField intronMotif --outFileNamePrefix $line/$line --sjdbGTFfile $genome/iwgsc_refseqv1.0_HighConf_2017Mar13.gff3 --sjdbGTFtagExonParentTranscript Parent
 
-### 3. Consensus files
+### 3. Create consensus files
 
 	samtools mpileup -uf $genome/iwgsc_refseqv1-dna.fa $home/$line/*.out.bam | bcftools call -c | $scripts/vcfutils.pl vcf2fq > $line/$line\_cns.fastq
 	seqtk seq -a  $line/$line\_cns.fastq > $line/$line\_consensus.fasta
 	rm -rf $line/$line\_cns.fastq
 	tr '[:lower:]' '[:upper:]' < $line/$line\_consensus.fasta > $line/$line\_consensus_uc.fasta
 
-### 4. Concatenation and filtering 
+### 4. Concatenation and filtering to generate .phy file
 
 	FILES="*consensus_uc.fasta"
 	shopt -s nullglob
