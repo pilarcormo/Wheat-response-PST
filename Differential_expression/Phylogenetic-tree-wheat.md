@@ -29,8 +29,10 @@ All scripts and full pipelines to make a phylogenetic tree using field RNA-seq s
 	do
   		python $home/SCRIPTS/phylogenetic_trees/sort_fasta.py -f $f > $consensus/$(basename $f).sorted
 	done 
+	
 	# With all the files ordered by gene and placed in the sorted folder, filter out which genes are relevant (have enough information)
-	##### codon_from_fasta has multiple filtering parameters, the most relevant are -l (minimum percentage of known bases in a sequence for acceptance) -s (minimum number of accepted samples percentage)
+	# codon_from_fasta has multiple filtering parameters, the most relevant are -l (minimum percentage of known bases in a sequence for acceptance) -s (minimum number of accepted samples percentage)
+
 	python $home/SCRIPTS/phylogenetic_trees/codon_from_fasta.py -d $consensus -l 20 -s 20 -c codon123
 
 	# Select all the gene filtered sequences
